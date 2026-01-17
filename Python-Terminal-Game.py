@@ -2,5 +2,12 @@
 
 Using: Python -- Git/ GitHub -- Command Line/ File Navigation.
 
----> A Python Terminal Game. <---
+A Python Terminal Game.
+
+---> Noughts and Crosses <---
+
+also named:
+
+---> Tic-Tac-Toe <---
 '''
+
