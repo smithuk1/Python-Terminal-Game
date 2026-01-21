@@ -1,0 +1,21 @@
+Tic Tac Toe
+Pseudocode
+
+When game opens, print "Welcome to Tic Tac Toe, Ready for a game?"
+Have two players, p1 and p2
+random start
+when start print 3 x 3 grid
+columns labelled A B C
+rows labelled 1 2 3
+user inputs choice
+choice is shown in the respective grid placement
+plays out until a tie or a win
+if tie print "It's a tie!"
+if win print "p1/2 wins! better luck next time p1/2!"
+once ended print "play again?"
+If yes restart the game, winner starts
+If no, print "Thank you for playing!" and quit.
+
+Define player class - max 2 players
+Define choice function for grid play and play again
+Have initial random start, if play again winner starts
