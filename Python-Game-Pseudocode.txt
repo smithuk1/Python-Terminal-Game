@@ -1,6 +1,7 @@
 Tic Tac Toe
 Pseudocode
 
+import random
 When game opens, print "Welcome to Tic Tac Toe, Ready for a game?"
 Have two players, p1 and p2
 random start
@@ -15,7 +16,32 @@ if win print "p1/2 wins! better luck next time p1/2!"
 once ended print "play again?"
 If yes restart the game, winner starts
 If no, print "Thank you for playing!" and quit.
+Define player - max 2 players
+Have initial random start:
+    if play again winner starts
+    if tie and play again, random start again
+Define input format and validation rules:
+    Accepted = A1, b2, C3
+    Not accepted = anything above C and anything above 3
+    reject if chosen square is already taken, 
+    keep asking until valid
+Define mapping from coordinates to indexes
+Define  function for grid play and play again
+Define functions:
+    choice - grid play
+    choice - play again
+    initializing game
+    printing the board
+    getting a valid move
+    applying a move
+    checking winner
+    if its a tie or Not
+    switching player
+    quit
+    
+Game state tracking:
+board (3x3, starts empty)
+who the current player is
+who the winner is
+if the board is full
 
-Define player class - max 2 players
-Define choice function for grid play and play again
-Have initial random start, if play again winner starts
