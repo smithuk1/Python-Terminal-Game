@@ -45,3 +45,199 @@ who the current player is
 who the winner is
 if the board is full
 
+----------------------------------------------
+
+Tightened & Correctly Formatted
+
+Import random
+
+Constants:
+  COLUMNS = ["A", "B", "C"]
+  ROWS    = ["1", "2", "3"]
+  SYMBOLS = {"p1": "X", "p2": "O"}
+  ESCAPE_COMMAND = "QUIT"          # User can type quit in any case
+
+Game State (per single game):
+  board          = 3x3 grid (starts empty, using " " for empty)
+  current_player = "p1" or "p2"
+  winner         = "p1" or "p2" or None
+
+Output Format (Board):
+  Always print board like this:
+
+    A   B   C
+1   X | O |  
+    ---+---+---
+2     | X |  
+    ---+---+---
+3     |   | O
+
+
+Main:
+  Print "Welcome to Tic Tac Toe, Ready for a game?"
+  Print "Type 'quit' at any time to exit."
+
+  Player naming:
+    p1_name = input("Enter Player 1 name (X): ")
+    p2_name = input("Enter Player 2 name (O): ")
+
+  last_winner = None        # "p1" or "p2"
+  last_result = None        # "win" or "tie"
+
+  Loop forever:
+    board  = initialize_board()
+    winner = None
+
+    Decide who starts:
+      If last_result == "win":
+        current_player = last_winner
+      Else:
+        current_player = random_start_player()
+
+    (result, winner) = play_single_game(board, current_player)
+
+    If result == "tie":
+      Print "It's a tie!"
+      last_result = "tie"
+      last_winner = None
+    Else:
+      Print winner + " wins! better luck next time " + other_player(winner) + "!"
+      last_result = "win"
+      last_winner = winner
+
+    If ask_play_again() == False:
+      Print "Thank you for playing!"
+      Quit program
+
+
+Functions:
+
+initialize_board():
+  Return 3x3 grid filled with " "
+
+
+random_start_player():
+  Return random choice of ["p1", "p2"]
+
+
+play_single_game(board, starting_player) -> (result, winner):
+  current_player = starting_player
+
+  Loop forever:
+    print_board(board)
+
+    (row, column) = get_valid_move(board, current_player)
+
+    apply_move(board, current_player, row, column)
+
+    If check_winner(board) == True:
+      Return ("win", current_player)
+
+    If is_board_full(board) == True:
+      Return ("tie", None)
+
+    current_player = switch_player(current_player)
+
+
+print_board(board):
+  Print "    A   B   C"
+  Print "1   " + board[0][0] + " | " + board[0][1] + " | " + board[0][2]
+  Print "    ---+---+---"
+  Print "2   " + board[1][0] + " | " + board[1][1] + " | " + board[1][2]
+  Print "    ---+---+---"
+  Print "3   " + board[2][0] + " | " + board[2][1] + " | " + board[2][2]
+
+
+get_valid_move(board, current_player) -> (row, column):
+  Loop:
+    Prompt current_player:
+      "Enter your move (A1, B2, C3) or 'quit' to exit: "
+
+    raw   = user input
+    coord = uppercase(trim(raw))
+
+    If coord == ESCAPE_COMMAND:
+      Print "Thank you for playing!"
+      Quit program
+
+    If valid_format(coord) == False:
+      Print "Invalid input. Accepted examples: A1, b2, C3."
+      Continue loop
+
+    (row, column) = map_coord_to_indexes(coord)
+
+    If board[row][column] is not empty:
+      Print "That square is already taken. Try again."
+      Continue loop
+
+    Return (row, column)
+
+
+valid_format(coord) -> True/False:
+  If length(coord) != 2: Return False
+  If coord[0] not in COLUMNS: Return False
+  If coord[1] not in ROWS:    Return False
+  Return True
+
+
+map_coord_to_indexes(coord) -> (row, column):
+  column = index of coord[0] in COLUMNS
+  row    = index of coord[1] in ROWS
+  Return (row, column)
+
+
+apply_move(board, current_player, row, column):
+  symbol = SYMBOLS[current_player]
+  board[row][column] = symbol
+
+
+check_winner(board) -> True/False:
+  Rows:
+    If board[0][0] != " " and board[0][0] == board[0][1] == board[0][2]: Return True
+    If board[1][0] != " " and board[1][0] == board[1][1] == board[1][2]: Return True
+    If board[2][0] != " " and board[2][0] == board[2][1] == board[2][2]: Return True
+
+  Columns:
+    If board[0][0] != " " and board[0][0] == board[1][0] == board[2][0]: Return True
+    If board[0][1] != " " and board[0][1] == board[1][1] == board[2][1]: Return True
+    If board[0][2] != " " and board[0][2] == board[1][2] == board[2][2]: Return True
+
+  Diagonals:
+    If board[0][0] != " " and board[0][0] == board[1][1] == board[2][2]: Return True
+    If board[0][2] != " " and board[0][2] == board[1][1] == board[2][0]: Return True
+
+  Return False
+
+
+is_board_full(board) -> True/False:
+  For each row in board:
+    For each cell in row:
+      If cell == " ":
+        Return False
+  Return True
+
+
+switch_player(current_player) -> "p1" or "p2":
+  If current_player == "p1": Return "p2"
+  Else: Return "p1"
+
+
+other_player(player) -> "p1" or "p2":
+  If player == "p1": Return "p2"
+  Else: Return "p1"
+
+
+ask_play_again() -> True/False:
+  Loop:
+    raw    = input "Play again? (y/n) or 'quit' to exit: "
+    answer = uppercase(trim(raw))
+
+    If answer == ESCAPE_COMMAND:
+      Print "Thank you for playing!"
+      Quit program
+
+    If answer in ["Y", "YES"]: Return True
+    If answer in ["N", "NO"]:  Return False
+
+    Print "Please enter y or n."
+
